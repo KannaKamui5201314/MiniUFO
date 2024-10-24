@@ -1,0 +1,23 @@
+{
+    "appid": "ttda33ac8e45074d2007",
+    "projectname": "MiniUFO",
+    "unity": {
+        "build": {
+            "webgl": "E:\\Unity_program\\unity\\MiniUFO\\build\\webgl\\webgl_package-20241024_173057.zip",
+            "native": {
+                "il2cpp": "",
+                "apk": "",
+                "fullApk": ""
+            },
+            "instantGame": ""
+        },
+        "publishType": "2",
+        "starkSdkVersion": "Without StarkSDK",
+        "unityToolsVersion": "4.0.2",
+        "unityEngineVersion": "2022.3.43f1c1",
+        "arch": "both"
+    },
+    "setting": {
+        "urlCheck": true
+    }
+}

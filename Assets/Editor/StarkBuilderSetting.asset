@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1315287583, guid: 91ca00c7fc2fb4540a0c678b5d6640bb, type: 3}
+  m_Name: StarkBuilderSetting
+  m_EditorClassIdentifier: 
+  wasmResourceUrl: http://
+  webGLOutputDir: E:/Unity_program/unity/MiniUFO/build/webgl
+  useByteAudioAPI: 0
+  wasmMemorySize: 128
+  isWebGL2: 0
+  needCompress: 0
+  symbolMode: 1
+  profiling: 0
+  buildOptions: 0
+  optimizeWebGLMemoryInBackground: 1
+  assetBundleFSEnabled: 1
+  assetBundleBufferCapacity: 128
+  assetBundleBufferTTL: 5
+  urlCacheList: []
+  dontCacheFileNames: []
+  isDevBuild: 0
+  stripEngineCode: 0
+  apkFileNameBase: 
+  apkOutputDir: 
+  appHost: 2
+  compressMethod: 1
+  runtimeEnv: 0
+  framework: 1
+  architecture: 2
+  miniApkVersion: 0
+  scriptingBackend: 0
+  NativeWhiteListRegex:
+  - com.bytedance.starksdk
+  - _Backup~
+  a: 
+  version: 
+  autoVersion: 0
+  b: E:\Unity_program\unity\MiniUFO\build\webgl\webgl_package-20241024_173057.zip
+  c: 0
+  d: 0
+  e: 0
+  publishDesc: 
+  idePath: "E:/Program Files/@bytedminiprogram-ide/\u6296\u97F3\u5F00\u53D1\u8005\u5DE5\u5177.exe"

@@ -1,0 +1,34 @@
+{
+    "name": "MyInputActions",
+    "maps": [
+        {
+            "name": "UFO",
+            "id": "ec06102c-bd9b-4e36-b55b-ed87d7bd0559",
+            "actions": [
+                {
+                    "name": "TouchDelta",
+                    "type": "Value",
+                    "id": "9c6b2116-fd70-4a89-b5d1-cfb37149efed",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1ceab112-d760-4dc5-b94f-e8770201d0a1",
+                    "path": "<Touchscreen>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TouchDelta",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
