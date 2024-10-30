@@ -14,7 +14,7 @@ public class MainCameraController : MonoBehaviour
         MainCamera = GetComponent<Camera>();
         ufoTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         SetSize();
-        SpriteMask = GetComponentInChildren<Transform>();
+        SpriteMask = this.transform.Find("SpriteMask");
         cun = Mathf.Sqrt(Screen.width * Screen.width + Screen.height * Screen.height)/100f;
         //Debug.Log(SpriteMask.localScale);
         //动态修改遮罩大小
