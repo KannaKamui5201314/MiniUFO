@@ -1,3 +1,8 @@
+/*
+ * 功能：抖音侧边栏
+ * 内容：对话框有一个取消按钮和一个确认按钮，取消就退出对话框，确认就打开抖音侧边栏。
+ */
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,8 +13,8 @@ using UnityEngine.UI;
 
 public class Dialog_SideBar : MonoBehaviour
 {
-    Button Left;
-    Button Right;
+    Button Left;//取消按钮
+    Button Right;//确认按钮
 
     GameObject eventSystem;
     GameController gameController;
@@ -25,11 +30,13 @@ public class Dialog_SideBar : MonoBehaviour
         Right.onClick.AddListener(RightOnClick);
     }
 
+    //退出对话框
     private void LeftOnClick()
     {
         this.gameObject.SetActive(false);
     }
 
+    //打开抖音侧边栏
     private void RightOnClick()
     {
         this.gameObject.SetActive(false);
@@ -46,6 +53,7 @@ public class Dialog_SideBar : MonoBehaviour
         
     }
 
+    //TT.CheckScene回调
     private void CheckSceneSuccess(bool obj)
     {
         if (obj)
@@ -53,6 +61,7 @@ public class Dialog_SideBar : MonoBehaviour
             JsonData data = new JsonData();
             data["scene"] = "sidebar";
 
+            //打开抖音侧边栏
             TT.NavigateToScene(data, () =>
             {
                 Debug.Log("navigate to scene success");

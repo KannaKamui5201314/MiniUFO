@@ -1,3 +1,7 @@
+/*
+ * 背景音乐播放控制器
+ * （切换音乐时，存在卡顿现象，已弃用）
+ */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

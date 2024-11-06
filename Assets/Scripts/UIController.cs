@@ -1,3 +1,7 @@
+/*
+ * UI控制器
+ * 进入游戏时会显示游戏开始字幕按钮，点击后即可开始游戏
+ */
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,39 +14,40 @@ using static TTSDK.TTAppLifeCycle;
 
 public class UIController : MonoBehaviour
 {
-    private Button gameStartButton;
-    private RectTransform gameStartButtonRectTransform;
-    private TextMeshProUGUI Times;
+    private Button gameStartButton;//游戏开始字幕按钮
+    private RectTransform gameStartButtonRectTransform;//游戏开始字幕按钮Transform
+    private TextMeshProUGUI Times;//游戏挑战次数
 
-    private readonly float scaleAmplitude = 0.1f;
-    private float scaleFrequency = 1f;
-    Vector3 gameStartButtonOriginalScale;
+    private readonly float scaleAmplitude = 0.1f;//游戏开始字幕缩放振幅
+    private float scaleFrequency = 1f;//游戏开始字幕缩放频率
+    Vector3 gameStartButtonOriginalScale;//游戏开始字幕初始缩放
 
-    private Button Ad;
+    private Button Ad;//点击广告按钮，跳转到TTSDK内的广告模块界面
 
-    private GameObject ProgressBar;
-    RectTransform ProgressBarRectTransform;
-    Vector2 ProgressBarOriginalSize;
+    private GameObject ProgressBar;//已弃用
+    RectTransform ProgressBarRectTransform;//已弃用
+    Vector2 ProgressBarOriginalSize;//已弃用
 
-    TextMeshProUGUI Level;
+    TextMeshProUGUI Level;//左上角显示的关数
 
-    public GameObject enemy;
-    public TextMeshProUGUI sum;
+    public GameObject enemy;//敌人Image UI
+    public TextMeshProUGUI sum;//当前敌人数量
 
-    Button Fire;
+    Button Fire;//开火攻击按钮
 
-    public static bool  isFire = true;
+    public static bool  isFire = true;//是否开火状态，已弃用
 
-    GameObject MoveRoulette;
+    GameObject MoveRoulette;//已弃用
 
-    public Button speedUp;
+    public Button speedUp;//加速键
 
-    public bool isPressed;
+    public bool isPressed;//加速键是否按下
 
-    public Joystick moveJoystick;
-    public Joystick fireJoystick;
+    public Joystick moveJoystick;//虚拟摇杆，控制玩家UFO移动，位于画布左下
+    public Joystick fireJoystick;//虚拟摇杆，控制玩家UFO上的炮台攻击方向，位于画布右下
 
-    Canvas canvas;
+    Canvas canvas;//画布
+    //血量UI，blood1-blood5，blood为父物体
     GameObject blood;
     GameObject blood1;
     GameObject blood2;
@@ -53,14 +58,14 @@ public class UIController : MonoBehaviour
     GameObject eventSystem;
     GameController gameController;
 
-    private Button SideBar;
+    private Button SideBar;//进入抖音侧边栏按钮
 
-    private Button Rank;
+    private Button Rank;//进入抖音排行榜按钮
 
     void Start()
     {
-        
 
+        //TT.GetAppLifeCycle().OnShow获取进入小游戏是通过什么方式
         TT.GetAppLifeCycle().OnShow += OnAppShow;
         gameStartButton = transform.Find("GameStartButton").gameObject.GetComponent<Button>();
         gameStartButtonRectTransform = gameStartButton.GetComponent<RectTransform>();
@@ -109,12 +114,14 @@ public class UIController : MonoBehaviour
         Rank.gameObject.SetActive(false);
     }
 
+    //进入抖音小游戏回调
     private void OnAppShow(Dictionary<string, object> param)
     {
         object locationValue;
         if (param.TryGetValue("location", out locationValue))
         {
             string location = locationValue as string;
+            //sidebar_card侧边栏进入
             if (location == "sidebar_card")
             {
                 
@@ -128,11 +135,12 @@ public class UIController : MonoBehaviour
         
     }
 
-    //加速按钮
+    //UFO加速按钮，持续增加移动速度，放开加速按钮后会自动减速
     void SpeedUp()
     {
         if (isPressed)
         {
+            //加速
             if (Global.UFOSpeed < Global.UFOMaxSpeed)
             {
                 Global.UFOSpeed += Time.deltaTime;
@@ -140,6 +148,7 @@ public class UIController : MonoBehaviour
         }
         else
         {
+            //减速
             if (Global.UFOSpeed > 4.6f)
             {
                 Global.UFOSpeed -= Time.deltaTime;
@@ -163,6 +172,7 @@ public class UIController : MonoBehaviour
         isFire = true;
     }
 
+    //已弃用
     public bool IsFire()
     {
         return isFire;
@@ -175,6 +185,7 @@ public class UIController : MonoBehaviour
     void Update()
     {
         //Debug.Log("Global.UFOSpeed=" + Global.UFOSpeed);
+        //游戏未开始时，不显示其他UI，只显示游戏开始按钮
         if (!Global.gameStart)
         {
             isPressed = false;
@@ -212,6 +223,7 @@ public class UIController : MonoBehaviour
             
         }
         GameStartButtonAnimation();
+        //游戏开始时，显示UI
         if (Global.gameStart)
         {
             Level.gameObject.SetActive(true);
@@ -251,16 +263,19 @@ public class UIController : MonoBehaviour
     //    }
     //}
 
+    //游戏开始按钮的点击事件
     void GameStartButtonOnClick()
     {
         if (Global.Times >= 1)
         {
+            //游戏开始按钮消失
             gameStartButton.gameObject.SetActive(false);
             Global.gameStart = true;
             Debug.Log("游戏开始！");
         }
     }
 
+    //广告按钮的点击事件，完成看广告任务后获取5次挑战机会
     void AdOnClick()
     {
         Global.Times = 5;
@@ -273,6 +288,7 @@ public class UIController : MonoBehaviour
         isFire = true;
     }
 
+    //游戏开始UI的动画，循环变大变小，类似正弦函数
     void GameStartButtonAnimation()
     {
         float time = Time.time;
@@ -281,7 +297,7 @@ public class UIController : MonoBehaviour
         gameStartButtonRectTransform.localScale = newScale;
     }
 
-    //blood：需要减少的血量
+    //blood：需要减少的血量，最大血量为5，扣完后游戏结束
     public void SetBlood(int blood)
     {
         gameController.PlayAudio();
@@ -318,25 +334,28 @@ public class UIController : MonoBehaviour
         }
     }
 
+    //抖音侧边栏按钮点击事件
     private void SideBarOnClick()
     {
+        //显示是否进入抖音侧边栏对话框
         SideBar.gameObject.transform.Find("Dialog_SideBar").gameObject.SetActive(true);
     }
-
+    //抖音排行榜按钮点击事件
     private void RankOnClick()
     {
         SetImRank(Global.level);
         GetImRank();
     }
 
+    //从抖音获取排行榜信息
     public void GetImRank()
     {
         var paramJson = new JsonData
         {
-            ["rankType"] = "all",
-            ["dataType"] = 0,
-            ["relationType"] = "all",
-            ["suffix"] = "关",
+            ["rankType"] = "all",//排名类型，可选值：day、week、month、all
+            ["dataType"] = 0,//排名数据类型，可选值： 0  或  1。0 表示返回数据被解析为 number。1 表示返回数据被解析为 string
+            ["relationType"] = "all",//排行榜类型
+            ["suffix"] = "关",//排名数据后的字段，比如“关”、“分”
         };
         Debug.Log($"GetImRankList param:{paramJson.ToJson()}");
         TT.GetImRankList(paramJson, (b, s) =>
@@ -351,6 +370,8 @@ public class UIController : MonoBehaviour
             }
         });
     }
+    //将游戏内的相关排行榜数据发送给抖音排行榜
+    //level为最高关数
     public void SetImRank(int level)
     {
         var paramJson = new JsonData

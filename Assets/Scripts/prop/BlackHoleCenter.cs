@@ -1,3 +1,7 @@
+/*
+ * 黑洞中心
+ * 有一个范围，进入黑洞中心，必死
+ */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +23,7 @@ public class BlackHoleCenter : MonoBehaviour
         uiController = canvas.GetComponent<UIController>();
     }
 
+    //检测进入黑洞中心的物体，只要进入就会被消灭
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -38,6 +43,8 @@ public class BlackHoleCenter : MonoBehaviour
         {
             Destroy(collision.gameObject);
         }
+
+        //如果道具刷新在黑洞中心区域，会重新刷新此道具的位置
         if (collision.gameObject.CompareTag("prop"))
         {
             collision.transform.position = new Vector3(

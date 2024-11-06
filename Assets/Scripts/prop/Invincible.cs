@@ -1,3 +1,8 @@
+/*
+ * 道具：无敌
+ * 简介：设置UFO为触发器状态，使敌人和宇宙波动检测不到UFO，
+ *              无敌状态UFO碰撞敌人会消灭敌人，也可以安全穿过宇宙波动
+ */
 using System.Collections;
 using System.Collections.Generic;
 using System.IO.Pipes;
@@ -15,10 +20,10 @@ public class Invincible : MonoBehaviour
 
     GameObject UFO;
     Transform UFOTransform;
-    Transform guard;
+    Transform guard;//UFO周边的护卫舰
 
-    private float speedguard = 120f; // 运动速度
-    private float angleguard = 0f;
+    private float speedguard = 120f; // 护卫舰角速度增量
+    private float angleguard = 0f; //护卫舰角速度
 
     private void OnEnable()
     {
@@ -55,7 +60,7 @@ public class Invincible : MonoBehaviour
                     //ufo无敌状态
                     UFO.GetComponent<CircleCollider2D>().isTrigger = true;
                     Global.UFOSpeed = 8f;
-                    //护卫舰旋转
+                    //护卫舰围绕UFO旋转移动，形成类似圆形护盾保护中心UFO
                     guard.up = new(xguard, yguard);
 
                 }
@@ -76,6 +81,7 @@ public class Invincible : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //拾取道具
         if (collision.CompareTag("Player"))
         {
             isInvincible = true;

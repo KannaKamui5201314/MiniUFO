@@ -1,3 +1,7 @@
+/*
+ * 道具：静止
+ * 简介：拾取时，使玩家UFO 1秒内无法移动
+ */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +12,7 @@ public class Stationary : MonoBehaviour
 
     bool isStationary;
 
-    float timer;
+    float timer;//静止时间定时器
 
     PropController propController;
 
@@ -28,6 +32,7 @@ public class Stationary : MonoBehaviour
     {
         propController.SetRenderer(this.gameObject.GetComponent<SpriteRenderer>(), isStationary);
 
+        //一秒内，UFO无法移动
         if (isStationary && Global.gameStart)
         {
             timer += Time.deltaTime;
@@ -41,6 +46,7 @@ public class Stationary : MonoBehaviour
             }
             else
             {
+                //UFO恢复静止前的状态
                 timer = 0f;
                 isStationary = false;
                 Global.UFOSpeed = 4.6f;
@@ -49,6 +55,8 @@ public class Stationary : MonoBehaviour
 
         }
     }
+
+    //拾取道具
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))

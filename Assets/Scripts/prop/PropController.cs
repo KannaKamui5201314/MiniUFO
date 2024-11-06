@@ -1,25 +1,29 @@
+/*
+ * 道具管理器
+ * 简介：生成所有道具
+ */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PropController : MonoBehaviour
 {
-    GameObject SuperluminalSpeed;
-    GameObject SuperluminalSpeedes;
-    public ObjectPool SuperluminalSpeedObjectPool;
+    GameObject SuperluminalSpeed;//加速道具
+    GameObject SuperluminalSpeedes;//加速道具父物体容器
+    public ObjectPool SuperluminalSpeedObjectPool;//加速道具对象池
 
-    GameObject Stationary;
+    GameObject Stationary;//静止道具
     GameObject Stationaries;
     public ObjectPool StationaryObjectPool;
 
-    GameObject Invincible;
+    GameObject Invincible;//无敌道具
     GameObject Invincibles;
     public ObjectPool InvincibleObjectPool;
 
-    GameObject Fluctuate;
-    float timer;
+    GameObject Fluctuate;//宇宙波动
+    float timer;//宇宙波动道具刷新的定时器
 
-    GameObject Guard;
+    GameObject Guard;//星空卫队
     GameObject Guards;
     public ObjectPool GuardObjectPool;
 
@@ -67,6 +71,7 @@ public class PropController : MonoBehaviour
         {
             if (objectPool.GetCount() > 0)
             {
+                //设置名称、父物体、刷新位置
                 GameObject newObject = objectPool.GetObject();
                 newObject.name = name;
                 newObject.transform.SetParent(Prefabs.transform);
@@ -90,30 +95,35 @@ public class PropController : MonoBehaviour
         if (Global.gameStart)
         {
             timer += Time.deltaTime;
+            //60秒刷新一个宇宙波动
             if (timer > 60f)
             {
                 timer = 0f;
                 GameObject obj = GameObject.Instantiate(Fluctuate);
                 obj.transform.SetParent(transform);
-                obj.transform.position = new(-506f, 0f);
+                obj.transform.position = new(-506f, 0f);//刷新的位置
             }
         }
         if (!Global.gameStart)
         {
+            //游戏结束，初始化刷新定时器
             timer = 0f;
         }
     }
 
-    //   isTouch:是否触摸
+    //设置道具是否渲染
+    //   isTouch:是否接触
     public void SetRenderer(Renderer obj, bool isTouch)
     {
         float distance = (ufoTransform.position - obj.transform.position).magnitude;
+        //相机外不渲染,否则渲染
         if (distance > Screen.width / 100f / 2f + 1f)
         {
             obj.enabled = false;
         }
         else
         {
+            //拾取道具时不渲染道具
             if (isTouch)
             {
                 obj.enabled = false;

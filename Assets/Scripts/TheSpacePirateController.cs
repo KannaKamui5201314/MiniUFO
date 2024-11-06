@@ -1,3 +1,7 @@
+/*
+ * 敌人控制器
+ * 主要是控制移动
+ */
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,28 +12,28 @@ using UnityEngine;
 public class TheSpacePirateController : MonoBehaviour
 {
 
-    readonly float safeDistance = Screen.width/100f * 0.5f;//1920分辨率下大约是10
+    readonly float safeDistance = Screen.width/100f * 0.5f;//屏幕宽度的一半，横屏1920分辨率下大约是10单位
 
-    private Transform ufo;
+    private Transform ufo;//玩家
 
-    private float limitTime;
-    private float flyTimer;
-    private float fireFrequencyTimer;
+    private float limitTime = 2f;//敌人每2秒改变移动方向
+    private float flyTimer;//敌人移动时间定时器
+    private float fireFrequencyTimer;//敌人开火定时器
 
     Vector3 newEnemyPositon;
 
-    Vector2 forceDirection;
+    Vector2 forceDirection;//目标方向
 
-    GameObject laser;
-    GameObject Lasers;
+    GameObject laser;//子弹
+    GameObject Lasers;//子弹父物体
 
-    private Rigidbody2D rd;
+    private Rigidbody2D rd;//敌人刚体组件
 
+    //引用
     void Start()
     {
         laser = Resources.Load<GameObject>("Prefabs/Laser");
         
-        limitTime = 2f;//15/6=2.5s
         ufo = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 
         rd = GetComponent<Rigidbody2D>();
@@ -43,11 +47,13 @@ public class TheSpacePirateController : MonoBehaviour
         }
     }
 
+    //敌人移动控制
     void Move()
     {
         flyTimer += Time.deltaTime;
         fireFrequencyTimer += Time.deltaTime;
         //Debug.Log("safeDistance=" + safeDistance);
+        //敌人和玩家UFO的距离小于屏幕宽，会智能化移动
         if (GetEnemyDistance() < 2*safeDistance)
         {
             Lasers = GameObject.Find("Lasers");
@@ -68,7 +74,7 @@ public class TheSpacePirateController : MonoBehaviour
                 newLaser.transform.position = transform.position;
             }
 
-            //2.5秒更换一次移动方向
+            //2秒更换一次移动方向
             if (flyTimer > limitTime)
             {
                 flyTimer = 0;
@@ -77,6 +83,7 @@ public class TheSpacePirateController : MonoBehaviour
                 Task.Run(() =>
                 {
                     // 在这里执行耗时的计算任务
+                    //随机玩家UFO的位置，智能化敌人移动路径
                     float xx_UFO = GetEnemyPositon().x + UnityEngine.Random.Range(-2f * safeDistance, 2f * safeDistance);
                     float yy_UFO = GetEnemyPositon().y - GetEnemyDirection().y / Mathf.Abs(GetEnemyDirection().y) *
                                                                             Mathf.Sqrt(2f * safeDistance * 2f * safeDistance - xx_UFO * xx_UFO);
@@ -93,12 +100,13 @@ public class TheSpacePirateController : MonoBehaviour
                     forceDirection = new(-GetEnemyDirection().x, -GetEnemyDirection().y);
                 }
                 //Debug.Log("===" + forceDirection);
+                //敌人移动
                 rd.velocity = (Global.MaxSpeed * forceDirection.normalized);
             }
         }
         else
         {
-            //冲向UFO
+            //开始时冲向玩家UFO
             forceDirection = GetEnemyDirection().normalized;
             rd.velocity = (3f *Global.MaxSpeed * forceDirection.normalized);
             //transform.Translate(Global.MaxSpeed * Time.deltaTime * forceDirection);
@@ -106,27 +114,22 @@ public class TheSpacePirateController : MonoBehaviour
         
     }
 
-    //敌人坐标
+    //玩家坐标
     Vector3 GetEnemyPositon()
     {
         return ufo.position;
     }
 
-    //敌人距离
+    //玩家目标距离
     float GetEnemyDistance()
     {
         return (GetEnemyPositon() - transform.position).magnitude;
     }
 
-    //敌人方向
+    //玩家的方向
     Vector3 GetEnemyDirection()
     {
         Vector3 enemyDirection = GetEnemyPositon() - transform.position;
         return enemyDirection;
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        
     }
 }
